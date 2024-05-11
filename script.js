@@ -1,8 +1,7 @@
 // Function to generate a random YouTube video ID
 function generateRandomVideoId() {
-    // Sample characters to use in video IDs
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
-    const idLength = 11; // YouTube video IDs are typically 11 characters long
+    const idLength = 11;
 
     let videoId = '';
     for (let i = 0; i < idLength; i++) {
@@ -21,15 +20,40 @@ function generateRandomVideoUrl() {
     return videoUrl;
 }
 
-// Function to display a random YouTube video URL
-function displayRandomVideo() {
-    const videoUrl = generateRandomVideoUrl();
+// Function to check if a YouTube video exists
+async function checkVideoExists(videoId) {
+    const apiKey = 'YOUR_YOUTUBE_API_KEY'; // Replace with your YouTube Data API key
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${AIzaSyC3mtxrKFZLVICHkax7579rZwmVCegx6SU]}&part=snippet`;
+
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.items && data.items.length > 0) {
+            return true; // Video exists
+        } else {
+            return false; // Video does not exist
+        }
+    } catch (error) {
+        console.error('Error checking video existence:', error);
+        return false; // Error occurred while checking video existence
+    }
+}
+
+// Function to display a random YouTube video URL (if video exists)
+async function displayRandomVideo() {
+    let videoExists = false;
+    let videoUrl = '';
+
+    while (!videoExists) {
+        const videoId = generateRandomVideoId();
+        videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        videoExists = await checkVideoExists(videoId);
+    }
+
     const videoContainer = document.getElementById('video-container');
+    videoContainer.innerHTML = ''; // Clear previous content
 
-    // Clear previous content
-    videoContainer.innerHTML = '';
-
-    // Create and append a link element
     const videoLink = document.createElement('a');
     videoLink.href = videoUrl;
     videoLink.textContent = videoUrl;
