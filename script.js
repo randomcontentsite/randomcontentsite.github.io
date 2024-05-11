@@ -22,8 +22,8 @@ function generateRandomVideoUrl() {
 
 // Function to check if a YouTube video exists
 async function checkVideoExists(videoId) {
-    const apiKey = 'YOUR_YOUTUBE_API_KEY'; // Replace with your YouTube Data API key
-    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${AIzaSyC3mtxrKFZLVICHkax7579rZwmVCegx6SU]}&part=snippet`;
+    const apiKey = 'AIzaSyC3mtxrKFZLVICHkax7579rZwmVCegx6SU'; // Replace with your YouTube Data API key
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
 
     try {
         const response = await fetch(apiUrl);
