@@ -1,3 +1,4 @@
+
 // Function to generate a random YouTube video ID
 function generateRandomVideoId() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
@@ -12,17 +13,9 @@ function generateRandomVideoId() {
     return videoId;
 }
 
-// Function to generate a new random YouTube video URL
-function generateRandomVideoUrl() {
-    const videoId = generateRandomVideoId();
-    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-
-    return videoUrl;
-}
-
 // Function to check if a YouTube video exists
 async function checkVideoExists(videoId) {
-    const apiKey = 'AIzaSyC3mtxrKFZLVICHkax7579rZwmVCegx6SU'; // Replace with your YouTube Data API key
+    const apiKey = 'AIzaSyC3mtxrKFZLVICHkax7579rZwmVCegx6SU';
     const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
 
     try {
@@ -47,20 +40,17 @@ async function displayRandomVideo() {
 
     while (!videoExists) {
         const videoId = generateRandomVideoId();
-        videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        videoUrl = `https://www.youtube.com/embed/${videoId}`; // Use embed URL
         videoExists = await checkVideoExists(videoId);
     }
 
-    const videoContainer = document.getElementById('video-container');
-    videoContainer.innerHTML = ''; // Clear previous content
-
-    const videoLink = document.createElement('a');
-    videoLink.href = videoUrl;
-    videoLink.textContent = videoUrl;
-    videoLink.target = '_blank'; // Open link in a new tab
-
-    videoContainer.appendChild(videoLink);
+    const videoIframe = document.getElementById('youtube-video');
+    videoIframe.src = videoUrl;
 }
 
 // Generate a random video URL when the page loads
 window.onload = displayRandomVideo;
+
+// Add event listener to the "Generate New Video" button
+const generateButton = document.getElementById('generate-btn');
+generateButton.addEventListener('click', displayRandomVideo);
